@@ -1,10 +1,10 @@
 /*
- *  rparrett_pongclock_OLED
- *  a porting to OLED of the pongclock by Rob Parrett
- *  http://robparrett.com/pongclock
- *  https://github.com/rparrett/pongclock
- *
- */
+    rparrett_pongclock_OLED
+    a porting to OLED of the pongclock by Rob Parrett
+    http://robparrett.com/pongclock
+    https://github.com/rparrett/pongclock
+
+*/
 
 
 #include <Bounce2.h>		//debounce library
@@ -40,12 +40,12 @@ int8_t ledpwm_steps[4] = { 255, 128, 64, 16 };
 #define OLED_RESET 4
 Adafruit_SSD1306 display(OLED_RESET);
 
-int sqw = 2;	//get the square wave from DS1307
-//int ledbtn = 5; //4; OLED doesn't have led
-int minutebtn = 6;
-int hourbtn = 7;
+const int sqw = 2;	//get the square wave from DS1307
+//const int ledbtn = 5; //4; OLED doesn't have led
+const int minutebtn = 6;
+const int hourbtn = 7;
 
-int led = 13; //5;
+const int led = 13; //5;
 
 Bounce minutebouncer = Bounce(minutebtn, 20);
 Bounce hourbouncer = Bounce(hourbtn, 20);
@@ -53,16 +53,16 @@ Bounce hourbouncer = Bounce(hourbtn, 20);
 
 RTC_DS1307 RTC;
 
-int16_t h = 64; //128;
-int16_t w = 128; //160;
+const int16_t h = 64; //128;
+const int16_t w = 128; //160;
 
 int pause = 0;
 
-int16_t paddle_h = 20;
-int16_t paddle_w = 2;
+const int16_t paddle_h = 20;
+const int16_t paddle_w = 2;
 
-int16_t lpaddle_x = 0;
-int16_t rpaddle_x = w - paddle_w;
+const int16_t lpaddle_x = 0;
+const int16_t rpaddle_x = w - paddle_w;
 
 int16_t lpaddle_y = 0;
 int16_t rpaddle_y = h - paddle_h;
@@ -70,8 +70,8 @@ int16_t rpaddle_y = h - paddle_h;
 int16_t lpaddle_d = 1;
 int16_t rpaddle_d = -1;
 
-int16_t lpaddle_ball_t = w - w / 4;
-int16_t rpaddle_ball_t = w / 4;
+const int16_t lpaddle_ball_t = w - w / 4;
+const int16_t rpaddle_ball_t = w / 4;
 
 int16_t target_y = 0;
 
@@ -79,14 +79,14 @@ int16_t ball_x = 2;
 int16_t ball_y = 2;
 int16_t ball_dx = 1;
 int16_t ball_dy = 1;
-int16_t ball_w = 3;
-int16_t ball_h = 3;
+const int16_t ball_w = 3;
+const int16_t ball_h = 3;
 
-int16_t dashline_h = 4;
-int16_t dashline_w = 2;
-int16_t dashline_n = h / dashline_h;
-int16_t dashline_x = w / 2 - 1;
-int16_t dashline_y = dashline_h / 2;
+const int16_t dashline_h = 4;
+const int16_t dashline_w = 2;
+const int16_t dashline_n = h / dashline_h;
+const int16_t dashline_x = w / 2 - 1;
+const int16_t dashline_y = dashline_h / 2;
 
 int16_t lscore = 12;
 int16_t rscore = 4;
@@ -98,19 +98,19 @@ int16_t hour = 12;
 int16_t minute = 4;
 volatile int16_t second = 0;
 
-int16_t font_s  = 2;
-int16_t font_w  = 5 * font_s;
-int16_t font_h  = 7 * font_s;
-int16_t font_sp = 2 * font_s;
+const int16_t font_s  = 2;
+const int16_t font_w  = 5 * font_s;
+const int16_t font_h  = 7 * font_s;
+const int16_t font_sp = 2 * font_s;
 
-uint16_t fgcolor = WHITE; //ST7735_GREEN;
-uint16_t bgcolor = BLACK; //ST7735_BLACK;
+const uint16_t fgcolor = WHITE; //ST7735_GREEN;
+const uint16_t bgcolor = BLACK; //ST7735_BLACK;
 
 
 //*****************************************
 void sqwint(void) {
   second = second + 1;
-  Serial.println(second);
+  //Serial.println(second);
 }
 //*****************************************
 
@@ -125,7 +125,7 @@ void setup(void) {
   initclock();
   initgame();
 
-  Serial.println(F("End inits"));
+  //Serial.println(F("End inits"));
 
   pinMode(minutebtn, INPUT_PULLUP);
   //digitalWrite(minutebtn, HIGH);
@@ -235,9 +235,8 @@ void loop() {
   ball();
   midline();
   score(fgcolor);
-
-  buttons();
   display.display();
+  buttons();
 }
 //*****************************************
 void buttons() {
@@ -304,14 +303,11 @@ void keeptime() {
 void midline() {
   for (int16_t i = 0; i < dashline_n; i = i + 2) {
     display.fillRect(dashline_x, dashline_y + i * dashline_h, dashline_w, dashline_h, fgcolor);
-    //display.display();
   }
 
   for (int16_t i = 1; i < dashline_n; i = i + 2) {
     display.fillRect(dashline_x, dashline_y + i * dashline_h, dashline_w, dashline_h, bgcolor);
-    //display.display();
   }
-  //display.display();
 }
 //*****************************************
 void score(int16_t color) {
@@ -324,7 +320,6 @@ void score(int16_t color) {
   display.println(lscore);
   display.setCursor(rscore_x, dashline_y);
   display.println(rscore);
-  //display.display();
 }
 //*****************************************
 void lpaddle() {
@@ -332,11 +327,9 @@ void lpaddle() {
 
   if (lpaddle_d == 1) {
     display.fillRect(lpaddle_x, lpaddle_y, paddle_w, 1, bgcolor);
-    //display.display();
   }
   else if (lpaddle_d == -1) {
     display.fillRect(lpaddle_x, lpaddle_y + paddle_h - 1, paddle_w, 1, bgcolor);
-    //display.display();
   }
 
   lpaddle_y = lpaddle_y + lpaddle_d;
@@ -352,18 +345,15 @@ void lpaddle() {
   else if (lpaddle_y <= 0 && lpaddle_d == -1) lpaddle_d = 0;
 
   display.fillRect(lpaddle_x, lpaddle_y, paddle_w, paddle_h, fgcolor);
-  //display.display();
 }
 //*****************************************
 void rpaddle() {
   if (pause > 0) return;
   if (rpaddle_d == 1) {
     display.fillRect(rpaddle_x, rpaddle_y, paddle_w, 1, bgcolor);
-    //display.display();
   }
   else if (rpaddle_d == -1) {
     display.fillRect(rpaddle_x, rpaddle_y + paddle_h - 1, paddle_w, 1, bgcolor);
-    //display.display();
   }
   rpaddle_y = rpaddle_y + rpaddle_d;
   if (ball_dx == -1) rpaddle_d = 0;
@@ -377,7 +367,6 @@ void rpaddle() {
   else if (rpaddle_y <= 0 && rpaddle_d == -1) rpaddle_d = 0;
 
   display.fillRect(rpaddle_x, rpaddle_y, paddle_w, paddle_h, fgcolor);
-  //display.display();
 }
 //*****************************************
 void calc_target_y() {
@@ -473,6 +462,5 @@ void ball() {
   }
 
   display.fillRect(ball_x, ball_y, ball_w, ball_h, fgcolor);
-  //display.display();
 }
 

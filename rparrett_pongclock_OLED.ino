@@ -7,7 +7,7 @@
 */
 
 
-#include <Bounce2.h>		//debounce library
+#include <Bounce2.h>		//debounce library https://github.com/thomasfredericks/Bounce2
 #include <SPI.h>
 #include <Wire.h>
 #include <EEPROM.h>
